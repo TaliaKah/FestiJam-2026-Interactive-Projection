@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" charset="UTF-8"/>
+    <title>Modifie les visuels en live</title>
+    <style>
+      body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column; /* Portrait : tout en colonne */
+        background: #111;
+        color: white;
+        font-family: sans-serif;
+      }
+
+      header {
+        text-align: center;
+        /* padding: 15px; */
+        background:#111111;
+        font-size: 1.5rem;
+        font-weight: bold;
+        border-bottom: 2px solid #333;
+      }
+
+      #draw-zone {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background:  #2e2e2e;
+        padding-bottom : 20px;
+      }
+
+      #circle-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #hint {
+        /* margin-bottom: 20px; */
+        font-size: 1.5rem;
+        color: #ffffff;
+        text-align: center;
+        /* padding-bottom: 10px; */
+      }
+
+      #circle {
+        width: 70vmin;
+        height: 70vmin;
+        border-radius: 50%;
+        background: radial-gradient(circle, #333, #111);
+        border: 3px solid #555;
+        position: relative;
+        overflow: hidden;
+        touch-action: none;
+      }
+
+      #controls {
+        width: 100%; /* occupe toute la largeur en mode portrait */
+        background: #3d3d3d;
+        /* padding: 15px; */
+        border-top: 2px solid #333;
+      }
+      
+      #sliderVisuel {
+        width: 90%;
+      }
+
+      #sliderDessin {
+        width: 90%;
+      }
+
+      label {
+        display: block;
+        margin: 15px 0 5px;
+      }
+
+      input[type=range] {
+        width: 100%;
+      }
+
+      .trail {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(158,158,158,0.7);
+        transform: translate(-50%,-50%);
+        pointer-events: none;
+        animation: fadeout 0.8s forwards;
+      }
+
+      @keyframes fadeout {
+        from {opacity:1;}
+        to {opacity:0; transform: translate(-50%,-50%) scale(0.3);}
+      }
+
+      /* --- QR code style --- */
+      #qrcodes { 
+        /* margin-top: 30px;  */
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        background-color: #020202;
+        padding-top: 20px;
+      }
+
+      .qrcode-box { 
+        text-align: center; 
+      }
+
+      .qrcode-box img {
+        max-width: 140px; 
+        height: auto; /* respecte proportions → parfait pour ton QR rectangulaire */
+        border-radius: 8px; 
+      }
+
+      .qrcode-box p { 
+        /* margin-top: 8px;  */
+        font-size: 0.9rem; 
+        color: #aaa; 
+      }
+
+      /* --- Crédits --- */
+      footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 0.8rem;
+        color: #888;
+        background: #000;
+        border-top: 1px solid #333;
+      }
+
+      img{
+    
+      border: 1px solid;
+      border-radius: 5px;
+      border-color: #aaaaaa;
+      border-radius: 10px;
+      width: 75px;
+height: 75px;
+  }
+
+    </style>
+  </head>
+  <body>
+    <div id="controls" style="display: flex; 
+        align-items: center;
+        justify-content: space-around;">
+      <label style="display: flex; 
+        align-items: center;
+        flex-direction: column;">
+        <!-- <div style="padding-bottom: 15px;">Type de Visuel</div> -->
+        <span>
+          <bouton onclick='sendSlider("Visuel", 0)'><img src="img(4).png"></img></bouton>
+          <bouton onclick='sendSlider("Visuel", 1)'><img src="img(2).png"></img></bouton>
+          <bouton onclick='sendSlider("Visuel", 2)'><img src="img(3).png"></img></bouton>
+          <bouton onclick='sendSlider("Visuel", 3)'><img src="img(1).png"></img></bouton>
+        </span>
+      </label>
+      <label style="display: flex; 
+        align-items: center;
+        flex-direction: column;">
+       <!-- <div style="padding-bottom: 15px;">Type de Dessin</div> -->
+        <span>
+          <bouton onclick='sendSlider("Dessin", 0)'><img src="img(5).png"></img></bouton>
+          <bouton onclick='sendSlider("Dessin", 1)'><img src="img(6).png"></img></bouton>
+        </span>
+      </label>
+    </div>
+    <div id="draw-zone">
+      <div id="circle-wrapper">
+        <p id="hint">👆 Clique en haut 👆<br style="height: 20px;"/>👇 Dessine en bas 👇</p>
+        <div id="circle"></div>
+      </div>
+    </div>
+      <!-- Zone QR Codes -->
+    <div id="qrcodes">
+      <div class="qrcode-box">
+        <img src="QR_Code_Website.png" alt="QR Code logiciel">
+        <p>Testez le logiciel</p>
+      </div>
+      <div class="qrcode-box">
+        <img src="TaliaKah.png" alt="QR Code artiste">
+        <p>Suivez l'artiste</p>
+      </div>
+    </div>
+
+    <script>
+      // --- Debounce simple pour limiter le nombre de requêtes ---
+      function debounce(fn, delay) {
+        let timeout;
+        return (...args) => {
+          clearTimeout(timeout);
+          timeout = setTimeout(() => fn(...args), delay);
+        };
+      }
+
+      let id = 0
+      let bobX = 0
+      let bobY = 0
+      let requested = false
+
+      let sendPos = ()=>{
+        if(requested)
+      {
+requested=false
+        id++
+        sendSlider("/clickX", bobX)
+        sendSlider("/clickY", bobY)
+        sendSlider("/ID", id)
+      }
+         setTimeout(sendPos, 50)
+      }
+      requestAnimationFrame(sendPos)
+
+      // --- Envoi sliders vers port 1234 ---
+      const sendSlider = (name, value)=> debounce(() => {
+        fetch(`http://192.168.1.11:1234/set?value=${value}&name=${name}`);
+      }, 20)();
+
+      //document.getElementById("sliderVisuel").addEventListener("input", e => sendSlider("Visuel", e.target.value));
+      //document.getElementById("sliderDessin").addEventListener("input", e => sendSlider("Dessin", e.target.value));
+
+      // --- Zone cercle interactive ---
+      let dragging = false;
+      const circle = document.getElementById("circle");
+      const rect = () => circle.getBoundingClientRect();
+
+      function addTrail(x, y, r) {
+        const dot = document.createElement("div");
+        dot.className = "trail";
+        dot.style.left = `${x - r.left}px`;
+        dot.style.top = `${y - r.top}px`;
+        circle.appendChild(dot);
+        setTimeout(() => dot.remove(), 800);
+      }
+
+      function send(x, y) {
+        const r = rect();
+        const cx = r.left + r.width/2;
+        const cy = r.top + r.height/2;
+        const dx = x - cx;
+        const dy = y - cy;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+
+        if(dist > r.width/2) return;
+
+        addTrail(x, y, r);
+
+        const normX = dx/(r.width/2);
+        const normY = -dy/(r.height/2);
+
+        // debounce(()=>{
+        //   fetch(`http://192.168.100.38:1234/set?value=${normX}&name=/clickX`);
+        //   fetch(`http://192.168.100.38:1234/set?value=${normY}&name=/clickY`);
+        //   fetch(`http://192.168.100.38:1234/set?value=${id}&name=/ID`);
+        // },20)
+      
+
+        bobX = normX
+        bobY = normY
+        requested = true
+        // sendSlider("/clickX", normX)
+        // sendSlider("/clickY", normY)
+        // sendSlider("/ID", id)
+
+        // fetch("http://192.168.100.38:3000/click", {
+        //   method: "POST",
+        //   headers: {"Content-Type":"application/json"},
+        //   body: JSON.stringify({x:normX, y:normY})
+        // });
+      }
+
+      // --- Events souris ---
+      circle.addEventListener("mousedown", e => { dragging=true; send(e.clientX,e.clientY); });
+      window.addEventListener("mousemove", e => { if(dragging) send(e.clientX,e.clientY); });
+      window.addEventListener("mouseup", () => { dragging=false; });
+
+      // --- Events touch ---
+      circle.addEventListener("touchstart", e => { dragging=true; send(e.touches[0].clientX,e.touches[0].clientY); });
+      circle.addEventListener("touchmove", e => { if(dragging) send(e.touches[0].clientX,e.touches[0].clientY); });
+      circle.addEventListener("touchend", () => { dragging=false; });
+    </script>
+  </body>
+</html>

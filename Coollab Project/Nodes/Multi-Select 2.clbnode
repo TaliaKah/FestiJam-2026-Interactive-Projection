@@ -1,0 +1,29 @@
+// To learn how to write nodes, see https://coollab-art.com/Tutorials/Writing%20Nodes/Intro
+
+INPUT int 'Selected ID';
+
+INPUT UV->Oklab_PremultipliedA 'Image 1';
+INPUT int 'ID 1';
+
+INPUT UV->Oklab_PremultipliedA 'Image 2';
+INPUT int 'ID 2';
+
+INPUT UV->Oklab_PremultipliedA 'Image 3';
+INPUT int 'ID 3';
+
+INPUT UV->Oklab_PremultipliedA 'Image 4';
+INPUT int 'ID 4';
+
+Oklab_PremultipliedA main(UV uv)
+{
+    if( 'Selected ID' == 'ID 1')
+               return 'Image 1'(uv);
+           else if( 'Selected ID' == 'ID 2')
+               return 'Image 2'(uv);
+           else if( 'Selected ID' == 'ID 3')
+               return 'Image 3'(uv);
+           else if( 'Selected ID' == 'ID 4')
+               return 'Image 4'(uv);
+            else
+               return vec4(0., 0., 0., 1.);
+}
