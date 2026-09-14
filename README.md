@@ -16,8 +16,6 @@ The installation consists of a computer running the visual system, a projector d
 
 The tablet runs a local web interface. User interactions are sent to the visual system through **HTTP requests**, allowing visitors to modify the projection in real time.
 
-The repository also contains an older **OSC-based communication system** (`server.py` and commented code in the web interface), which was used during development and is kept here for reference.
-
 ### Communication
 
 ```text
@@ -38,7 +36,6 @@ The repository contains the different parts of the installation:
 
 * `Coollab Project/` — the Coollab project and visual system;
 * `Web/` — the web interface used on the tablet, including its assets;
-* `Server/` — Python code for the previous OSC-based communication system;
 * `Coollab Project/Nodes/` — custom Coollab nodes used by the project;
 
 ### Custom Coollab node
@@ -81,12 +78,6 @@ To find the computer's local IP address on Windows:
    ```
 3. Find the local IPv4 address of the computer.
 4. Replace the old IP address in the web interface with the current one.
-
-### OSC communication
-
-If you want to use the older OSC-based communication system, the IP address in `Server/server.py` must also be updated.
-
-The OSC-related code in the web interface is currently commented out.
 
 ## Credits
 

@@ -222,9 +222,6 @@ requested=false
         fetch(`http://192.168.1.11:1234/set?value=${value}&name=${name}`);
       }, 20)();
 
-      //document.getElementById("sliderVisuel").addEventListener("input", e => sendSlider("Visuel", e.target.value));
-      //document.getElementById("sliderDessin").addEventListener("input", e => sendSlider("Dessin", e.target.value));
-
       // --- Zone cercle interactive ---
       let dragging = false;
       const circle = document.getElementById("circle");
@@ -254,25 +251,9 @@ requested=false
         const normX = dx/(r.width/2);
         const normY = -dy/(r.height/2);
 
-        // debounce(()=>{
-        //   fetch(`http://192.168.100.38:1234/set?value=${normX}&name=/clickX`);
-        //   fetch(`http://192.168.100.38:1234/set?value=${normY}&name=/clickY`);
-        //   fetch(`http://192.168.100.38:1234/set?value=${id}&name=/ID`);
-        // },20)
-      
-
         bobX = normX
         bobY = normY
         requested = true
-        // sendSlider("/clickX", normX)
-        // sendSlider("/clickY", normY)
-        // sendSlider("/ID", id)
-
-        // fetch("http://192.168.100.38:3000/click", {
-        //   method: "POST",
-        //   headers: {"Content-Type":"application/json"},
-        //   body: JSON.stringify({x:normX, y:normY})
-        // });
       }
 
       // --- Events souris ---
