@@ -1,6 +1,6 @@
-# FestiJam 2025 – Interactive Projection in a Geodesic Dome
+# FestiJam 2026 - Interactive Projection
 
-An interactive audiovisual projection created for **FestiJam 2025**, presented inside a geodesic dome.
+An interactive audiovisual projection created for **FestiJam 2026**.
 
 Visitors could interact with the projection using a tablet. The tablet interface allowed them to:
 
@@ -10,11 +10,9 @@ Visitors could interact with the projection using a tablet. The tablet interface
 
 The projection was generated in real time using **Coollab**, with custom nodes developed for the project.
 
-*The interactive projection during FestiJam 2025.*
-
 ## How it works
 
-The installation consists of a computer running the visual system, a projector displaying the visuals inside the geodesic dome, and a tablet used as an interactive interface.
+The installation consists of a computer running the visual system, a projector displaying the visuals and a tablet used as an interactive interface.
 
 The tablet runs a local web interface. User interactions are sent to the visual system through **HTTP requests**, allowing visitors to modify the projection in real time.
 
@@ -93,7 +91,7 @@ The OSC-related code in the web interface is currently commented out.
 
 ## Offline resources
 
-The `Offline Resources/` folder contains installers and other resources that were used to set up the installation at FestiJam 2025, where the project had to be installed and run without an Internet connection.
+The `Offline Resources/` folder contains installers and other resources that were used to set up the installation at FestiJam 2026, where the project had to be installed and run without an Internet connection.
 
 These files are kept in the repository so that the project can be installed on another computer without having to retrieve the required software again.
 
@@ -101,7 +99,7 @@ They are not normally required if the corresponding software is already installe
 
 ## Credits
 
-**Project:** FestiJam 2025
+**Project:** FestiJam 2026 - Interactive Projection
 
 **Created by:** Talia’Kah
 
