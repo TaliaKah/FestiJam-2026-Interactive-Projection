@@ -40,7 +40,6 @@ The repository contains the different parts of the installation:
 * `Web/` — the web interface used on the tablet, including its assets;
 * `Server/` — Python code for the previous OSC-based communication system;
 * `Coollab Project/Nodes/` — custom Coollab nodes used by the project;
-* `Offline Resources/` — installers and other resources kept for offline installation.
 
 ### Custom Coollab node
 
@@ -88,14 +87,6 @@ To find the computer's local IP address on Windows:
 If you want to use the older OSC-based communication system, the IP address in `Server/server.py` must also be updated.
 
 The OSC-related code in the web interface is currently commented out.
-
-## Offline resources
-
-The `Offline Resources/` folder contains installers and other resources that were used to set up the installation at FestiJam 2026, where the project had to be installed and run without an Internet connection.
-
-These files are kept in the repository so that the project can be installed on another computer without having to retrieve the required software again.
-
-They are not normally required if the corresponding software is already installed on the system.
 
 ## Credits
 
