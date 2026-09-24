@@ -16,7 +16,6 @@
 
       header {
         text-align: center;
-        /* padding: 15px; */
         background:#111111;
         font-size: 1.5rem;
         font-weight: bold;
@@ -31,20 +30,12 @@
         padding-bottom : 20px;
       }
 
-      #circle-wrapper {
+      #zone-wrapper {
         display: flex;
         flex-direction: column;
         align-items: center;
       }
-
-      #hint {
-        /* margin-bottom: 20px; */
-        font-size: 1.5rem;
-        color: #ffffff;
-        text-align: center;
-        /* padding-bottom: 10px; */
-      }
-
+      
       #circle {
         width: 70vmin;
         height: 70vmin;
@@ -55,29 +46,27 @@
         overflow: hidden;
         touch-action: none;
       }
-
-      #controls {
-        width: 100%; /* occupe toute la largeur en mode portrait */
-        background: #3d3d3d;
-        /* padding: 15px; */
-        border-top: 2px solid #333;
+      
+      #instructions {
+        font-size: 1.5rem;
+        color: #ffffff;
+        text-align: center;
       }
       
-      #sliderVisuel {
-        width: 90%;
-      }
-
-      #sliderDessin {
-        width: 90%;
+      #controls {
+        display: flex; 
+        align-items: center;
+        justify-content: space-around;
+        width: 100%; /* occupe toute la largeur en mode portrait */
+        background: #3d3d3d;
+        border-top: 2px solid #333;
       }
 
       label {
-        display: block;
+        display: flex; 
+        align-items: center;
+        flex-direction: column;
         margin: 15px 0 5px;
-      }
-
-      input[type=range] {
-        width: 100%;
       }
 
       .trail {
@@ -97,8 +86,7 @@
       }
 
       /* --- QR code style --- */
-      #qrcodes { 
-        /* margin-top: 30px;  */
+      #credits { 
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -114,12 +102,11 @@
 
       .qrcode-box img {
         max-width: 140px; 
-        height: auto; /* respecte proportions → parfait pour ton QR rectangulaire */
+        height: auto;
         border-radius: 8px; 
       }
 
-      .qrcode-box p { 
-        /* margin-top: 8px;  */
+      .qrcode-box p {
         font-size: 0.9rem; 
         color: #aaa; 
       }
@@ -135,25 +122,18 @@
       }
 
       img{
-    
-      border: 1px solid;
-      border-radius: 5px;
-      border-color: #aaaaaa;
-      border-radius: 10px;
-      width: 75px;
-height: 75px;
-  }
+        border: 1px solid;
+        border-color: #aaaaaa;
+        border-radius: 10px;
+        width: 75px;
+        height: 75px;
+      }
 
     </style>
   </head>
   <body>
-    <div id="controls" style="display: flex; 
-        align-items: center;
-        justify-content: space-around;">
-      <label style="display: flex; 
-        align-items: center;
-        flex-direction: column;">
-        <!-- <div style="padding-bottom: 15px;">Type de Visuel</div> -->
+    <div id="controls">
+      <label>
         <span>
           <bouton onclick='sendSlider("Visuel", 0)'><img src="img(4).png"></img></bouton>
           <bouton onclick='sendSlider("Visuel", 1)'><img src="img(2).png"></img></bouton>
@@ -161,10 +141,7 @@ height: 75px;
           <bouton onclick='sendSlider("Visuel", 3)'><img src="img(1).png"></img></bouton>
         </span>
       </label>
-      <label style="display: flex; 
-        align-items: center;
-        flex-direction: column;">
-       <!-- <div style="padding-bottom: 15px;">Type de Dessin</div> -->
+      <label>
         <span>
           <bouton onclick='sendSlider("Dessin", 0)'><img src="img(5).png"></img></bouton>
           <bouton onclick='sendSlider("Dessin", 1)'><img src="img(6).png"></img></bouton>
@@ -172,20 +149,20 @@ height: 75px;
       </label>
     </div>
     <div id="draw-zone">
-      <div id="circle-wrapper">
-        <p id="hint">👆 Clique en haut 👆<br style="height: 20px;"/>👇 Dessine en bas 👇</p>
+      <div id="zone-wrapper">
+        <p id="instructions">👆 Clique en haut 👆<br style="height: 20px;"/>👇 Dessine en bas 👇</p>
         <div id="circle"></div>
       </div>
     </div>
       <!-- Zone QR Codes -->
-    <div id="qrcodes">
+    <div id="credits">
       <div class="qrcode-box">
         <img src="QR_Code_Website.png" alt="QR Code logiciel">
-        <p>Testez le logiciel</p>
+        <p>Tester le logiciel</p>
       </div>
       <div class="qrcode-box">
         <img src="TaliaKah.png" alt="QR Code artiste">
-        <p>Suivez l'artiste</p>
+        <p>Suivre l'artiste</p>
       </div>
     </div>
 
@@ -207,7 +184,7 @@ height: 75px;
       let sendPos = ()=>{
         if(requested)
       {
-requested=false
+        requested=false
         id++
         sendSlider("/clickX", bobX)
         sendSlider("/clickY", bobY)
