@@ -37,9 +37,9 @@
       }
       
       #circle {
-        width: 70vmin;
-        height: 70vmin;
-        border-radius: 50%;
+        width: 80vmin;
+        height: 45vmin;
+        border-radius: 1%;
         background: radial-gradient(circle, #333, #111);
         border: 3px solid #555;
         position: relative;
@@ -215,18 +215,9 @@
 
       function send(x, y) {
         const r = rect();
-        const cx = r.left + r.width/2;
-        const cy = r.top + r.height/2;
-        const dx = x - cx;
-        const dy = y - cy;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-
-        if(dist > r.width/2) return;
-
         addTrail(x, y, r);
-
-        const normX = dx/(r.width/2);
-        const normY = -dy/(r.height/2);
+        const normX = (x - r.left) / r.width * 2 - 1;
+        const normY = 1 - (y - r.top) / r.height * 2;
 
         bobX = normX
         bobY = normY
