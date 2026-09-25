@@ -45,9 +45,10 @@
         position: relative;
         overflow: hidden;
         touch-action: none;
+        padding: 10px;
       }
       
-      #instructions {
+      .instructions {
         font-size: 1.5rem;
         color: #ffffff;
         text-align: center;
@@ -83,6 +84,11 @@
       @keyframes fadeout {
         from {opacity:1;}
         to {opacity:0; transform: translate(-50%,-50%) scale(0.3);}
+      }
+
+      #zone{
+        display: flex;
+        flex-direction: column;
       }
 
       /* --- QR code style --- */
@@ -125,32 +131,39 @@
         border: 1px solid;
         border-color: #aaaaaa;
         border-radius: 10px;
-        width: 75px;
-        height: 75px;
+        width: 100px;
+        height: 100px;
       }
 
     </style>
   </head>
   <body>
-    <div id="controls">
-      <label>
-        <span>
-          <bouton onclick='sendSlider("Visuel", 0)'><img src="img(4).png"></img></bouton>
-          <bouton onclick='sendSlider("Visuel", 1)'><img src="img(2).png"></img></bouton>
-          <bouton onclick='sendSlider("Visuel", 2)'><img src="img(3).png"></img></bouton>
-          <bouton onclick='sendSlider("Visuel", 3)'><img src="img(1).png"></img></bouton>
-        </span>
-      </label>
-      <label>
-        <span>
-          <bouton onclick='sendSlider("Dessin", 0)'><img src="img(5).png"></img></bouton>
-          <bouton onclick='sendSlider("Dessin", 1)'><img src="img(6).png"></img></bouton>
-        </span>
-      </label>
+    <div id="zone">     
+      <div id="controls">
+      <div>
+        <p class="instructions">👇 Choisis un effet 👇</p>
+        <label>
+          <span>
+            <bouton onclick='sendSlider("Visuel", 0)'><img src="img(4).png"></img></bouton>
+            <bouton onclick='sendSlider("Visuel", 1)'><img src="img(2).png"></img></bouton>
+            <bouton onclick='sendSlider("Visuel", 2)'><img src="img(3).png"></img></bouton>
+            <bouton onclick='sendSlider("Visuel", 3)'><img src="img(1).png"></img></bouton>
+          </span>
+        </label>
+      </div>
+      <div>
+        <label>
+          <p class="instructions">👇 Choisis un pinceau 👇</p>
+          <span>
+            <bouton onclick='sendSlider("Dessin", 0)'><img src="img(5).png"></img></bouton>
+            <bouton onclick='sendSlider("Dessin", 1)'><img src="img(6).png"></img></bouton>
+          </span>
+        </label>
+      </div>
     </div>
     <div id="draw-zone">
       <div id="zone-wrapper">
-        <p id="instructions">👆 Clique en haut 👆<br style="height: 20px;"/>👇 Dessine en bas 👇</p>
+        <p class="instructions">👇 Dessine ici 👇</p>
         <div id="circle"></div>
       </div>
     </div>
@@ -165,6 +178,7 @@
         <p>Suivre l'artiste</p>
       </div>
     </div>
+  </div>
 
     <script>
       // --- Debounce simple pour limiter le nombre de requêtes ---
@@ -196,7 +210,7 @@
 
       // --- Envoi sliders vers port 1234 ---
       const sendSlider = (name, value)=> debounce(() => {
-        fetch(`http://192.168.1.11:1234/set?value=${value}&name=${name}`);
+        fetch(`http://192.168.1.171:1234/set?value=${value}&name=${name}`);
       }, 20)();
 
       // --- Zone cercle interactive ---
